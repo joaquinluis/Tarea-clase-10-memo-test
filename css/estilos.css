@@ -1,0 +1,35 @@
+.oculto {
+	display: none;
+}
+
+.azul {
+	background-color: blue;
+}
+.rojo {
+	background-color: red;
+}
+.verde {
+	background-color: green;
+}
+.rosa {
+	background-color: hotpink;
+}
+.negro {
+	background-color: black;
+}
+.amarillo {
+	background-color: yellow;
+}
+.cuadro {
+	height: 80px;
+	border-style: solid;
+	border-width: 10px;
+	border-color: gray;
+	border-radius: 15px;
+}
+.bloqueado {
+	background-color: whitesmoke;
+}
+.resuelto {
+	background-color: white;
+}
