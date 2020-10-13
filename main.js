@@ -2,6 +2,7 @@
 
 let cuadro1 = [];
 let cuadro2 = [];
+let score = 0;
 
 document.querySelector("#boton-empezar").onclick = function () {
 	let estadoJugando = document.querySelector("#estado-jugando");
@@ -43,22 +44,22 @@ function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function compararCuadros(a, b) {
-	let tableroDelJuego = document.querySelector("#tablero-del-juego");
-	let cuadrosNoResueltos = document.querySelectorAll(".bloqueado");
+function compararClases(a, b) {
 	let clasesCuadro1 = document.querySelector(`#${a}`).classList;
 	let clasesCuadro2 = document.querySelector(`#${b}`).classList;
 	let primerCuadro = document.querySelector(`#${a}`);
 	let segundoCuadro = document.querySelector(`#${b}`);
 	if (clasesCuadro1.value === clasesCuadro2.value) {
 		setTimeout(function () {
-			//primerCuadro.classList.add("resuelto");
 			primerCuadro.id = "resuelto";
-			//segundoCuadro.classList.add("resuelto");
 			segundoCuadro.id = "resuelto";
 		}, 500);
 		cuadro1 = [];
 		cuadro2 = [];
+		score = score + 1;
+		progresoDelJuego(score);
+
+		return true;
 	} else {
 		setTimeout(function () {
 			primerCuadro.classList.add("bloqueado");
@@ -66,18 +67,35 @@ function compararCuadros(a, b) {
 		}, 750);
 		cuadro1 = [];
 		cuadro2 = [];
-	}
-	if (cuadrosNoResueltos.length == 0) {
-		tableroDelJuego.classList.add("oculto");
-		alert("Ganaste!!!");
+		return false;
 	}
 }
 
+function progresoDelJuego(score) {
+	let barraDeProgreso = document.querySelector("#barra-progreso");
+	let tableroDelJuego = document.querySelector("#tablero-del-juego");
+
+	if (score > 0) {
+		let porcentajeProgreso = score * 20 - 10;
+		barraDeProgreso.innerHTML = `<div class="progress-bar" role="progressbar"
+		 style="width: ${porcentajeProgreso}%"
+		  aria-valuenow="${porcentajeProgreso}"
+		   aria-valuemin="0"
+		    aria-valuemax="100"></div>`;
+	}
+
+	if (score === 6) {
+		setTimeout(function () {
+			tableroDelJuego.classList.add("oculto");
+			alert("Ganaste!!!");
+		}, 500);
+		return true;
+	}
+}
 function manejarClick() {
 	document.querySelectorAll(".cuadro").forEach(function ($cuadro) {
 		$cuadro.onclick = function (e) {
 			let cuadroSeleccionado = e.target.id;
-			//console.log(cuadroSeleccionado);
 			if (cuadroSeleccionado.id !== "resuelto") {
 				$cuadro.classList.remove("bloqueado");
 
@@ -91,7 +109,7 @@ function manejarClick() {
 					}
 				}
 				if ((cuadro1.length > 0) & (cuadro2.length > 0)) {
-					compararCuadros(cuadro1[0], cuadro2[0]);
+					compararClases(cuadro1[0], cuadro2[0]);
 				}
 			}
 		};
